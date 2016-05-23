@@ -8,7 +8,7 @@ using namespace std;
 int main() {
 	while (true) {
 		system("clear");
-		cout << "IMAGES MANAGER\n";
+		system("echo \"\e[7;96mIMAGES MANAGER\e[0m\"");
 		string dirName;
 		int folderExists;
 		string bashCmd;

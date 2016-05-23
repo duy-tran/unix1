@@ -9,12 +9,46 @@ bool showImage(string dirName) {
 }
 
 void imageMenu(string dirName) {
-	cout << endl;
+	char selection;
+	bool checkExit = false, caseLoop = true;
+	while (!checkExit) {
+		system("echo \"\e[96m1. Sort\n2. Open image\n3. Find an image\n0. Quit\e[0m\"");
+		do {
+			cout << "Enter your choice: ";
+			cin >> selection;
+			switch (selection) {
+				case '1': {
+					cout << "Sort function here\n";
+					caseLoop = false;
+					break;			
+				}
+				case '2': {
+					cout << "Open function here\n";
+					caseLoop = false;
+					break;			
+				}
+				case '3': {
+					cout << "Find function here\n";
+					caseLoop = false;
+					break;			
+				}
+				case '0': {
+					cout << "Quit\n";
+					caseLoop = false;
+					checkExit = true;
+					break;			
+				}
+				default: {
+					system("echo \"\e[91mPlease enter a valid choice\e[0m\"");
+					break;			
+				}
+			}
+		} while (caseLoop);
+	}
 }
 
 void findImageIn(string dirName) {
 	system("clear");
-	cout << "Images in directory "<<dirName<<endl;
 	if (!showImage(dirName)) {
 		cout << "No image found!\n";
 	}
