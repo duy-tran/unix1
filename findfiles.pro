@@ -1,11 +1,16 @@
 QT += widgets
 
-HEADERS       = window.h
+HEADERS       = window.h \
+    filelist.h \
+    imagefile.h
 SOURCES       = main.cpp \
-                window.cpp
+                window.cpp \
+    imagefile.cpp \
+    filelist.cpp \
+    testList.cpp
 
 # install
-target.path = $$[QT_INSTALL_EXAMPLES]/widgets/dialogs/findfiles
+target.path = ~/unix/project1
 INSTALLS += target
 
 DISTFILES += \

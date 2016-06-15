@@ -114,15 +114,18 @@ void Window::find()
     currentDir = QDir(path);
     QStringList files;
     if (fileName.isEmpty())
-        fileName = "\*";
-    std::string cmd = "~/Qt5.6.0/Examples/Qt-5.6/qtbase/widgets/dialogs/findfiles/findImage.sh /Users/duy/Desktop \\*";
+        fileName = "\\*";
+    std::string cmd = "./findImage.sh /Users/duy/Desktop \\*";
     char buffer[128];
     std::string result = "";
+    int i=0;
     std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
     if (!pipe) throw std::runtime_error("popen() failed!");
     while (!feof(pipe.get())) {
-      if (fgets(buffer, 128, pipe.get()) != NULL)
+      if (fgets(buffer, 128, pipe.get()) != NULL){
         result += buffer;
+        i++;
+      }
      }
     files = currentDir.entryList(QStringList(fileName),
                                  QDir::Files | QDir::NoSymLinks);

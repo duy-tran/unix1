@@ -3,9 +3,9 @@
 for var in `find "$1" -name "$2" -type f -exec file {} \; | awk -F: '{if ($2 ~/image/) print $1}'`
 do
         fileSize=$(stat -f "%z" "$var")
-        fileSize=$((fileSize/1024))
+        fileSize=$((fileSize/1024)) # <= in KB
         fileDate=$(stat -f "%SB" "$var")
-        echo $var "$fileSize"KB $fileDate
+        echo $fileSize\;$fileDate\;$var
 done
 
 exit 0
