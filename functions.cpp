@@ -3,7 +3,7 @@
 
 bool showImage(string dirName) {
 	int found;
-	string bashCmd = "./showImages.sh "+dirName;
+	string bashCmd = "./showImages.sh "+dirName+" \\*";
 	found = system(bashCmd.c_str());
 	return found == 0 ? true: false;
 }
