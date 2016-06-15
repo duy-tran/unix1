@@ -41,6 +41,7 @@
 #include <QtWidgets>
 
 #include "window.h"
+#include "filelist.h"
 #include <cstdio>
 #include <iostream>
 #include <memory>
@@ -115,59 +116,29 @@ void Window::find()
     QStringList files;
     if (fileName.isEmpty())
         fileName = "\\*";
-    std::string cmd = "./findImage.sh /Users/duy/Desktop \\*";
+    std::string cmd = "/Users/duy/unix/project1/findImage.sh /Users/duy/Desktop \\*";
     char buffer[128];
+    //std::string temp;
+    FileList *images = new FileList();
     std::string result = "";
     int i=0;
     std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
-    if (!pipe) throw std::runtime_error("popen() failed!");
+    if (!pipe)
+        throw std::runtime_error("popen() failed!");
     while (!feof(pipe.get())) {
       if (fgets(buffer, 128, pipe.get()) != NULL){
         result += buffer;
+        std::string temp(buffer);
+        images->addFile(temp);
         i++;
       }
      }
+    images->show();
     files = currentDir.entryList(QStringList(fileName),
                                  QDir::Files | QDir::NoSymLinks);
     showFiles(files);
 }
 
-QStringList Window::findFiles(const QStringList &files, const QString &text)
-{
-    QProgressDialog progressDialog(this);
-    progressDialog.setCancelButtonText(tr("&Cancel"));
-    progressDialog.setRange(0, files.size());
-    progressDialog.setWindowTitle(tr("Find Files"));
-
-    QStringList foundFiles;
-
-    for (int i = 0; i < files.size(); ++i) {
-        progressDialog.setValue(i);
-        progressDialog.setLabelText(tr("Searching file number %1 of %2...")
-                                    .arg(i).arg(files.size()));
-        qApp->processEvents();
-
-        if (progressDialog.wasCanceled())
-            break;
-
-        QFile file(currentDir.absoluteFilePath(files[i]));
-
-        if (file.open(QIODevice::ReadOnly)) {
-            QString line;
-            QTextStream in(&file);
-            while (!in.atEnd()) {
-                if (progressDialog.wasCanceled())
-                    break;
-                line = in.readLine();
-                if (line.contains(text)) {
-                    foundFiles << files[i];
-                    break;
-                }
-            }
-        }
-    }
-    return foundFiles;
-}
 
 void Window::showFiles(const QStringList &files)
 {

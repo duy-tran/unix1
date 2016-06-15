@@ -20,7 +20,9 @@ ImageFile::ImageFile(std::string inputString){
     mark = temp.find(";");
     // Get date and path
     createdDate = temp.substr(0,mark);
-    pathFile = temp.substr(mark+1);
+    temp = temp.substr(mark+1);
+    mark = temp.find(";");
+    pathFile = temp.substr(0,mark);
     nameFile = getNameFromPath(pathFile);
 }
 void ImageFile::show(){

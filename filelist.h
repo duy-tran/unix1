@@ -7,6 +7,7 @@ public:
     ImageFile *tail;
     FileList();
     void addFile(ImageFile *file);
+    void addFile(std::string inputString);
     void show();
 };
 
