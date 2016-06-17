@@ -7,6 +7,7 @@ class ImageFile {
     std::string nameFile;
     int sizeKB;
     std::string createdDate;
+    int conflict;
   public:
     ImageFile *next;
     ImageFile();
@@ -16,6 +17,7 @@ class ImageFile {
     std::string getName();
     std::string getCreatedDate();
     int getSize();
+    int getConflict();
     void show();
 };
 std::string getNameFromPath(std::string path);

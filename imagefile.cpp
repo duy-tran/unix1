@@ -24,9 +24,12 @@ ImageFile::ImageFile(std::string inputString){
     mark = temp.find(";");
     pathFile = temp.substr(0,mark);
     nameFile = getNameFromPath(pathFile);
+    temp = temp.substr(mark+1);
+    mark = temp.find(";");
+    conflict = atoi(temp.substr(0,mark).c_str());
 }
 void ImageFile::show(){
-    std::cout << "Path: "<<pathFile<<", name: "<<nameFile<<", size: "<<sizeKB<<" KB, createdDate: "<<createdDate<<std::endl;
+    std::cout << "Path: "<<pathFile<<", name: "<<nameFile<<", size: "<<sizeKB<<" KB, createdDate: "<<createdDate<<" , conflict: "<<conflict<<std::endl;
 }
 std::string getNameFromPath(std::string path){
     std::size_t mark = path.find_last_of("/");
@@ -46,4 +49,8 @@ std::string ImageFile::getCreatedDate(){
 
 int ImageFile::getSize(){
     return sizeKB;
+}
+
+int ImageFile::getConflict(){
+    return conflict;
 }

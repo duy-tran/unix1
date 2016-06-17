@@ -114,7 +114,7 @@ void Window::find()
     if (fileName.isEmpty() || fileName=="*")
         fileName = "*";
     std::string cmd = "/Users/duy/unix/project1/findImage.sh \""+ path.toStdString()+
-            "\" \""+fileName.toStdString()+"\"";
+            "\" \"*"+fileName.toStdString()+"*\"";
     char buffer[128];
     //std::string temp;
     FileList *images = new FileList();
@@ -127,6 +127,7 @@ void Window::find()
         images->addFile(temp);
       }
      }
+    images->show();
     showFiles(images);
 }
 
@@ -147,6 +148,11 @@ void Window::showFiles(FileList *list)
         createdDateItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         createdDateItem->setFlags(createdDateItem->flags() ^ Qt::ItemIsEditable);
         int row = filesTable->rowCount();
+        if (ptr->getConflict() == 1){
+            fileNameItem->setForeground(Qt::red);
+            sizeItem->setForeground(Qt::red);
+            createdDateItem->setForeground(Qt::red);
+        }
         filesTable->insertRow(row);
         filesTable->setItem(row, 0, fileNameItem);
         filesTable->setItem(row, 1, sizeItem);
