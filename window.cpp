@@ -60,15 +60,15 @@ Window::Window(QWidget *parent)
     textComboBox = createComboBox();
     directoryComboBox = createComboBox("/Users/duy/Desktop");
 
-    fileLabel = new QLabel(tr("Named:"));
-    directoryLabel = new QLabel(tr("In directory:"));
+    fileLabel = new QLabel(tr("Key word:"));
+    directoryLabel = new QLabel(tr("Directory:"));
     filesFoundLabel = new QLabel;
 
     createFilesTable();
 
     QGridLayout *mainLayout = new QGridLayout;
     mainLayout->addWidget(fileLabel, 0, 0);
-    mainLayout->addWidget(fileComboBox, 0, 1, 1, 2);
+    mainLayout->addWidget(fileComboBox, 0, 1, 1, 1);
     mainLayout->addWidget(directoryLabel, 1, 0);
     mainLayout->addWidget(directoryComboBox, 1, 1);
     mainLayout->addWidget(findButton, 2, 1);
@@ -109,14 +109,11 @@ void Window::find()
     updateComboBox(fileComboBox);
     updateComboBox(directoryComboBox);
 
-    currentDir = QDir(path);
-    QStringList files;
-    if (fileName.isEmpty() || fileName=="*")
+    if (fileName.isEmpty())
         fileName = "*";
     std::string cmd = "/Users/duy/unix/project1/findImage.sh \""+ path.toStdString()+
             "\" \"*"+fileName.toStdString()+"*\"";
     char buffer[128];
-    //std::string temp;
     FileList *images = new FileList();
     std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
     if (!pipe)
@@ -127,7 +124,6 @@ void Window::find()
         images->addFile(temp);
       }
      }
-    images->show();
     showFiles(images);
 }
 
@@ -175,15 +171,17 @@ QComboBox *Window::createComboBox(const QString &text)
 void Window::createFilesTable()
 {
     filesTable = new QTableWidget(0, 3);
+    filesTable->setSortingEnabled(true);
+    filesTable->sortByColumn(0, Qt::AscendingOrder);
+    filesTable->sortByColumn(1, Qt::AscendingOrder);
+    filesTable->sortByColumn(2, Qt::AscendingOrder);
     filesTable->setSelectionBehavior(QAbstractItemView::SelectRows);
-
     QStringList labels;
-    labels << tr("Filename") << tr("Size") << tr("Created Date");
+    labels << tr("File path") << tr("Size") << tr("Created Date");
     filesTable->setHorizontalHeaderLabels(labels);
     filesTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     filesTable->verticalHeader()->hide();
     filesTable->setShowGrid(false);
-
     connect(filesTable, &QTableWidget::cellActivated,
             this, &Window::openFileOfItem);
 }

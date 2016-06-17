@@ -43,7 +43,6 @@
 
 #include <QWidget>
 #include <QDir>
-#include "filelist.h"
 
 class QComboBox;
 class QLabel;
