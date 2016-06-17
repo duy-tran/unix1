@@ -43,6 +43,7 @@
 
 #include <QWidget>
 #include <QDir>
+#include "filelist.h"
 
 class QComboBox;
 class QLabel;
@@ -63,7 +64,7 @@ private slots:
     void openFileOfItem(int row, int column);
 
 private:
-    void showFiles(const QStringList &files);
+    void showFiles(FileList *list);
     QComboBox *createComboBox(const QString &text = QString());
     void createFilesTable();
 

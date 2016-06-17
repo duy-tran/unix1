@@ -11,7 +11,7 @@ ImageFile::ImageFile(std::string inputPathFile, int inputSizeKB, std::string inp
     createdDate = inputDate;
 }
 ImageFile::ImageFile(std::string inputString){
-    // Format is 209;May 27 21:13:19 2016;./jc.png
+    // Format is 209;May 27 21:13:19 2016;./jc.png;
     std::string temp;
     // Get size
     int mark = inputString.find(";");
@@ -31,4 +31,19 @@ void ImageFile::show(){
 std::string getNameFromPath(std::string path){
     std::size_t mark = path.find_last_of("/");
     return path.substr(mark+1);
+}
+std::string ImageFile::getPath(){
+    return pathFile;
+}
+
+std::string ImageFile::getName(){
+    return nameFile;
+}
+
+std::string ImageFile::getCreatedDate(){
+    return createdDate;
+}
+
+int ImageFile::getSize(){
+    return sizeKB;
 }

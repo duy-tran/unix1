@@ -1,6 +1,7 @@
 #include "filelist.h"
 FileList::FileList(){
     tail = head = NULL;
+    size = 0;
 }
 void FileList::addFile(ImageFile *file){
     if (tail!=NULL){
@@ -10,6 +11,7 @@ void FileList::addFile(ImageFile *file){
     }
     tail = file;
     file->next = NULL;
+    size++;
 }
 
 void FileList::addFile(std::string inputString){
@@ -24,3 +26,8 @@ void FileList::show(){
         ptr=ptr->next;
     }
 }
+
+int FileList::getSize(){
+    return size;
+}
+

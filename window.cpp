@@ -61,7 +61,6 @@ Window::Window(QWidget *parent)
     directoryComboBox = createComboBox("/Users/duy/Desktop");
 
     fileLabel = new QLabel(tr("Named:"));
-    textLabel = new QLabel(tr("Containing text:"));
     directoryLabel = new QLabel(tr("In directory:"));
     filesFoundLabel = new QLabel;
 
@@ -78,7 +77,7 @@ Window::Window(QWidget *parent)
     mainLayout->addWidget(filesFoundLabel, 4, 0, 1, 2);
     setLayout(mainLayout);
 
-    setWindowTitle(tr("Find Files"));
+    setWindowTitle(tr("Images Finder"));
     resize(600, 300);
 }
 
@@ -105,61 +104,56 @@ void Window::find()
     filesTable->setRowCount(0);
 
     QString fileName = fileComboBox->currentText();
-    QString text = textComboBox->currentText();
     QString path = directoryComboBox->currentText();
 
     updateComboBox(fileComboBox);
-    updateComboBox(textComboBox);
     updateComboBox(directoryComboBox);
 
     currentDir = QDir(path);
     QStringList files;
-    if (fileName.isEmpty())
-        fileName = "\\*";
-    std::string cmd = "/Users/duy/unix/project1/findImage.sh /Users/duy/Desktop \\*";
+    if (fileName.isEmpty() || fileName=="*")
+        fileName = "*";
+    std::string cmd = "/Users/duy/unix/project1/findImage.sh \""+ path.toStdString()+
+            "\" \""+fileName.toStdString()+"\"";
     char buffer[128];
     //std::string temp;
     FileList *images = new FileList();
-    std::string result = "";
-    int i=0;
     std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
     if (!pipe)
         throw std::runtime_error("popen() failed!");
     while (!feof(pipe.get())) {
       if (fgets(buffer, 128, pipe.get()) != NULL){
-        result += buffer;
         std::string temp(buffer);
         images->addFile(temp);
-        i++;
       }
      }
-    images->show();
-    files = currentDir.entryList(QStringList(fileName),
-                                 QDir::Files | QDir::NoSymLinks);
-    showFiles(files);
+    showFiles(images);
 }
 
 
-void Window::showFiles(const QStringList &files)
+void Window::showFiles(FileList *list)
 {
-    for (int i = 0; i < files.size(); ++i) {
-        QFile file(currentDir.absoluteFilePath(files[i]));
-        qint64 size = QFileInfo(file).size();
-
-        QTableWidgetItem *fileNameItem = new QTableWidgetItem(files[i]);
+    ImageFile *ptr = list->head;
+    while (ptr != NULL){
+        QTableWidgetItem *fileNameItem = new QTableWidgetItem();
+        fileNameItem->setText(QString::fromStdString(ptr->getPath()));
         fileNameItem->setFlags(fileNameItem->flags() ^ Qt::ItemIsEditable);
-        QTableWidgetItem *sizeItem = new QTableWidgetItem(tr("%1 KB")
-                                             .arg(int((size + 1023) / 1024)));
+        QTableWidgetItem *sizeItem = new QTableWidgetItem();
+        sizeItem->setText(QString::number(ptr->getSize())+" KB");
         sizeItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         sizeItem->setFlags(sizeItem->flags() ^ Qt::ItemIsEditable);
-
+        QTableWidgetItem *createdDateItem = new QTableWidgetItem();
+        createdDateItem->setText(QString::fromStdString(ptr->getCreatedDate()));
+        createdDateItem->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+        createdDateItem->setFlags(createdDateItem->flags() ^ Qt::ItemIsEditable);
         int row = filesTable->rowCount();
         filesTable->insertRow(row);
         filesTable->setItem(row, 0, fileNameItem);
         filesTable->setItem(row, 1, sizeItem);
+        filesTable->setItem(row, 2, createdDateItem);
+        ptr = ptr->next;
     }
-    filesFoundLabel->setText(tr("%1 file(s) found").arg(files.size()) +
-                             (" (Double click on a file to open it)"));
+    filesFoundLabel->setText(QString::number(list->getSize())+" file(s) found");
     filesFoundLabel->setWordWrap(true);
 }
 
@@ -174,11 +168,11 @@ QComboBox *Window::createComboBox(const QString &text)
 
 void Window::createFilesTable()
 {
-    filesTable = new QTableWidget(0, 2);
+    filesTable = new QTableWidget(0, 3);
     filesTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
     QStringList labels;
-    labels << tr("Filename") << tr("Size");
+    labels << tr("Filename") << tr("Size") << tr("Created Date");
     filesTable->setHorizontalHeaderLabels(labels);
     filesTable->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
     filesTable->verticalHeader()->hide();
@@ -192,6 +186,5 @@ void Window::createFilesTable()
 void Window::openFileOfItem(int row, int /* column */)
 {
     QTableWidgetItem *item = filesTable->item(row, 0);
-
     QDesktopServices::openUrl(QUrl::fromLocalFile(currentDir.absoluteFilePath(item->text())));
 }
