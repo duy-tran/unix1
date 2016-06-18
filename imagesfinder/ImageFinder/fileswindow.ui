@@ -43,7 +43,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QTableWidget" name="mainTable">
+   <widget class="QTableWidget" name="filesTable">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -52,6 +52,21 @@
       <height>201</height>
      </rect>
     </property>
+    <column>
+     <property name="text">
+      <string>File Path</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>FilePath</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Created Date</string>
+     </property>
+    </column>
    </widget>
    <widget class="QPushButton" name="backButton">
     <property name="geometry">

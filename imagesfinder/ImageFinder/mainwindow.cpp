@@ -9,10 +9,15 @@
 #include <string>
 #include "fileswindow.h"
 
+FilesWindow *filesWindow;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    filesWindow = new FilesWindow();
+    filesWindow->mainWindow = this;
+    filesWindow->hide();
     ui->setupUi(this);
     ui->dirPath->setEditable(true);
     ui->dirPath->addItem("/Users/duy/Desktop");
@@ -35,8 +40,9 @@ void MainWindow::on_browseButton_clicked()
     }
 }
 void MainWindow::openFilesWindow(FileList *inputList){
-    newFilesWindow = new FilesWindow();
-    newFilesWindow->show();
+    fileWindow->list = inputList;
+    filesWindow->show();
+    this->hide();
 }
 
 void MainWindow::on_findButton_clicked()

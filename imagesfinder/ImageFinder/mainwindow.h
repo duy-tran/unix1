@@ -5,7 +5,6 @@
 #include <QWidget>
 #include <QDir>
 #include "filelist.h"
-#include "fileswindow.h"
 
 class QComboBox;
 class QLabel;
@@ -35,7 +34,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     QComboBox *dirPath;
-    FilesWindow *newFilesWindow;
+
 };
 
 #endif // MAINWINDOW_H
