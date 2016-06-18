@@ -22,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->dirPath->setEditable(true);
     ui->dirPath->addItem("/Users/duy/Desktop");
     ui->dirPath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    setWindowTitle(tr("Images Finder"));
 }
 
 MainWindow::~MainWindow()
@@ -40,7 +41,9 @@ void MainWindow::on_browseButton_clicked()
     }
 }
 void MainWindow::openFilesWindow(FileList *inputList){
-    fileWindow->list = inputList;
+    filesWindow->resetTable();
+    filesWindow->updateList(inputList);
+    filesWindow->updateTable();
     filesWindow->show();
     this->hide();
 }
