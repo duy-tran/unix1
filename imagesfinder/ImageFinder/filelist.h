@@ -1,17 +1,17 @@
 #ifndef FILELIST_H
 #define FILELIST_H
-#include "imagefile.h"
+#include "audiofile.h"
 class FileList{
   public:
-    ImageFile *head;
-    ImageFile *tail;
+    AudioFile *head;
+    AudioFile *tail;
     int size;
     FileList();
-    void addFile(ImageFile *file);
-    void addFile(std::string inputString);
+    void addFile(AudioFile *file);
+    void addFile(std::string inputString,int formated);
     void show();
     int getSize();
-    ImageFile getHead();
+    void reset();
 };
 
 #endif // FILELIST_H

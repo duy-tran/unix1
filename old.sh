@@ -3,6 +3,7 @@ SAVEIFS=$IFS
 IFS=$(echo -en "\n\b")
 #echo -e "\e[96mList of images in $1"
 declare -A number
+declare -A array
 for var in `find "$1" -name "$2" -type f -exec file {} \; | awk -F: '{if ($2 ~/image/) print $1}'`
 do
 	fileName=$(basename "$var")

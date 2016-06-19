@@ -26,6 +26,8 @@ public:
 
 
 private slots:
+    void setUpUI();
+
     void on_browseButton_clicked();
 
     void on_findButton_clicked();
@@ -36,5 +38,5 @@ private:
     QComboBox *dirPath;
 
 };
-
+bool checkDir(std::string dirPath);
 #endif // MAINWINDOW_H

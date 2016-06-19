@@ -3,7 +3,7 @@ FileList::FileList(){
     tail = head = NULL;
     size = 0;
 }
-void FileList::addFile(ImageFile *file){
+void FileList::addFile(AudioFile *file){
     if (tail!=NULL){
         tail->next = file;
     } else {
@@ -14,13 +14,13 @@ void FileList::addFile(ImageFile *file){
     size++;
 }
 
-void FileList::addFile(std::string inputString){
-    ImageFile *temp = new ImageFile(inputString);
+void FileList::addFile(std::string inputString, int formated){
+    AudioFile *temp = new AudioFile(inputString,formated);
     addFile(temp);
 }
 
 void FileList::show(){
-    ImageFile *ptr = head;
+    AudioFile *ptr = head;
     while (ptr != NULL){
         ptr->show();
         ptr=ptr->next;
@@ -30,4 +30,7 @@ void FileList::show(){
 int FileList::getSize(){
     return size;
 }
-
+void FileList::reset(){
+    tail=head=NULL;
+    size=0;
+}

@@ -14,17 +14,19 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    imagefile.cpp \
     filelist.cpp \
-    fileswindow.cpp
+    fileswindow.cpp \
+    audiofile.cpp
 
 HEADERS  += mainwindow.h \
-    imagefile.h \
     filelist.h \
-    fileswindow.h
+    fileswindow.h \
+    audiofile.h
 
 FORMS    += mainwindow.ui \
     fileswindow.ui
 
 DISTFILES += \
-    findImage.sh
+    findImage.sh \
+    checkDir.sh \
+    findFile.sh \
